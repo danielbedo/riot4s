@@ -24,11 +24,11 @@ object Hello extends App {
     with DefaultStatsServiceComponent
     with GuavaServiceCacheComponent {
     override val actorSystem = ActorSystem()
-    override val apiKey: String = "87d54534-ad0a-4a83-af88-3439ccc87da9"
+    override val apiKey: String = ""
   }
 
   val statsFuture = for {
-    summoner <-services.summonerService.getSummonerByName("bobzilla", Regions.EUW)
+    summoner <-services.summonerService.getSummonerByName("", Regions.EUW)
     stats <- services.statsService.getSummary(summoner.id, Regions.EUW)
   } yield stats
 
