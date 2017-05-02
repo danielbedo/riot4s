@@ -1,4 +1,4 @@
-package com.danielbedo.riot4s.service.statsv13.model
+package com.github.danielbedo.riot4s.service.statsv13.model
 
 
 case class PlayerStatsSummaryListDto(playerStatSummaries: List[PlayerStatsSummaryDto])

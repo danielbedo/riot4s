@@ -1,9 +1,9 @@
-package com.danielbedo.riot4s.service.statsv13
+package com.github.danielbedo.riot4s.service.statsv13
 
 import cats.data.EitherT
-import com.danielbedo.riot4s.Regions.Region
-import com.danielbedo.riot4s.http.LeagueApiComponent
-import com.danielbedo.riot4s.service.statsv13.model.PlayerStatsSummaryListDto
+import com.github.danielbedo.riot4s.Regions.Region
+import com.github.danielbedo.riot4s.http.LeagueApiComponent
+import com.github.danielbedo.riot4s.service.statsv13.model.PlayerStatsSummaryListDto
 import io.circe._
 import io.circe.parser._
 import cats.syntax.either._

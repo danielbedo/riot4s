@@ -1,7 +1,7 @@
-package com.danielbedo.riot4s.http
+package com.github.danielbedo.riot4s.http
 
-import com.danielbedo.riot4s.ActorSystemProvider
-import com.danielbedo.riot4s.cache.ServiceCacheComponent
+import com.github.danielbedo.riot4s.ActorSystemProvider
+import com.github.danielbedo.riot4s.cache.ServiceCacheComponent
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.Uri.Query

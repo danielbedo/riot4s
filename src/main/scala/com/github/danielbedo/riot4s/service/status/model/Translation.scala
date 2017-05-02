@@ -1,4 +1,4 @@
-package com.danielbedo.riot4s.service.status.model
+package com.github.danielbedo.riot4s.service.status.model
 
 case class ShardStatus(name: String, region_tag: String, hostname: String, services: List[Service], slug: String, locales: List[String])
 case class Service(status: String, incidents: List[Incident], name: String, slug: String)

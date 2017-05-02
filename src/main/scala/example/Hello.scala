@@ -1,11 +1,11 @@
 package example
 
-import com.danielbedo.riot4s.{ActorSystemProvider, Regions}
-import com.danielbedo.riot4s.http.DefaultLeagueApiComponent
-import com.danielbedo.riot4s.cache.GuavaServiceCacheComponent
-import com.danielbedo.riot4s.service.statsv13.DefaultStatsServiceComponent
-import com.danielbedo.riot4s.service.status.DefaultStatusServiceComponent
-import com.danielbedo.riot4s.service.summoner.DefaultSummonerServiceComponent
+import com.github.danielbedo.riot4s.{ActorSystemProvider, Regions}
+import com.github.danielbedo.riot4s.http.DefaultLeagueApiComponent
+import com.github.danielbedo.riot4s.cache.GuavaServiceCacheComponent
+import com.github.danielbedo.riot4s.service.statsv13.DefaultStatsServiceComponent
+import com.github.danielbedo.riot4s.service.status.DefaultStatusServiceComponent
+import com.github.danielbedo.riot4s.service.summoner.DefaultSummonerServiceComponent
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration

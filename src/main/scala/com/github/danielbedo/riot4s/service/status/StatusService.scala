@@ -1,9 +1,9 @@
-package com.danielbedo.riot4s.service.status
+package com.github.danielbedo.riot4s.service.status
 
 import cats.data.EitherT
-import com.danielbedo.riot4s.Regions.Region
-import com.danielbedo.riot4s.http.LeagueApiComponent
-import com.danielbedo.riot4s.service.status.model.ShardStatus
+import com.github.danielbedo.riot4s.Regions.Region
+import com.github.danielbedo.riot4s.http.LeagueApiComponent
+import com.github.danielbedo.riot4s.service.status.model.ShardStatus
 import io.circe._
 import io.circe.parser._
 

@@ -1,10 +1,10 @@
-package com.danielbedo.riot4s.service.summoner
+package com.github.danielbedo.riot4s.service.summoner
 
 
 import cats.data.EitherT
-import com.danielbedo.riot4s.Regions.Region
-import com.danielbedo.riot4s.http.LeagueApiComponent
-import com.danielbedo.riot4s.service.summoner.model.SummonerDTO
+import com.github.danielbedo.riot4s.Regions.Region
+import com.github.danielbedo.riot4s.http.LeagueApiComponent
+import com.github.danielbedo.riot4s.service.summoner.model.SummonerDTO
 import io.circe.Error
 
 import scala.concurrent.ExecutionContext.Implicits.global

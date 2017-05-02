@@ -9,7 +9,7 @@ val catsVersion = "0.9.0"
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
-      organization := "com.danielbedo",
+      organization := "com.github.danielbedo",
       scalaVersion := "2.11.7",
       version      := "0.1.0-SNAPSHOT",
       test in assembly := {}

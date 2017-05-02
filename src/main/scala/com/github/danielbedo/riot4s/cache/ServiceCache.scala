@@ -1,4 +1,4 @@
-package com.danielbedo.riot4s.cache
+package com.github.danielbedo.riot4s.cache
 
 import com.google.common.cache.CacheBuilder
 

@@ -1,4 +1,4 @@
-package com.danielbedo.riot4s
+package com.github.danielbedo.riot4s
 
 import akka.actor.ActorSystem
 import akka.stream.Materializer
