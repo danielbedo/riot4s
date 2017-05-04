@@ -30,3 +30,30 @@ lazy val root = (project in file(".")).
 
 
 assemblyJarName in assembly := "riot4s.jar"
+
+useGpg := true
+
+organization := "com.github.danielbedo"
+publishMavenStyle := true
+pomIncludeRepository := { _ => false }
+pomExtra := (
+  <url>https://github.com/danielbedo/riot4s</url>
+    <licenses>
+      <license>
+        <name>Apache 2</name>
+        <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      </license>
+    </licenses>
+    <scm>
+      <connection>scm:git:git://github.com/danielbedo/riot4s.git</connection>
+      <developerConnection>scm:git:git://github.com/danielbedo/riot4s.git</developerConnection>
+      <url>https://github.com/danielbedo/riot4s/tree/master</url>
+    </scm>
+    <developers>
+      <developer>
+        <id>danielbedo</id>
+        <name>Daniel Bedo</name>
+        <url>http://github.com/danielbedo</url>
+      </developer>
+    </developers>
+  )
