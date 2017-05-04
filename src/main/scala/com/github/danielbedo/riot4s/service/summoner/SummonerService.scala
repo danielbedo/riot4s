@@ -1,6 +1,5 @@
 package com.github.danielbedo.riot4s.service.summoner
 
-
 import cats.data.EitherT
 import com.github.danielbedo.riot4s.Regions.Region
 import com.github.danielbedo.riot4s.http.LeagueApiComponent
@@ -30,7 +29,7 @@ trait DefaultSummonerServiceComponent extends SummonerServiceComponent {
     def getSummonerByName(summonerName: String, region: Region): EitherT[Future, Error, SummonerDTO] = {
       val url = s"${region.host}/lol/summoner/v3/summoners/by-name/$summonerName"
       val decoded = leagueApi
-        .getAsString(url)
+        .get(url)
         .map { jsonString => decode[SummonerDTO](jsonString)}
 
       EitherT(decoded)

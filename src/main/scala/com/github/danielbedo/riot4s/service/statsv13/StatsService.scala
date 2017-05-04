@@ -29,12 +29,13 @@ trait DefaultStatsServiceComponent extends StatsServiceComponent {
   class DefaultStatsService extends StatsService{
 
     def getSummary(summonerId: Long, region: Region): EitherT[Future, Error, PlayerStatsSummaryListDto] = {
-      val url = s"${region.host}.api.riotgames.com/api/lol/EUW/v1.3/stats/by-summoner/$summonerId/summary"
+      val url = s"${region.host}/api/lol/EUW/v1.3/stats/by-summoner/$summonerId/summary"
       val decoded = leagueApi
-        .getAsString(url)
+        .get(url)
         .map { jsonString =>
         decode[PlayerStatsSummaryListDto](jsonString)
       }
+
       EitherT(decoded)
     }
 

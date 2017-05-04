@@ -12,12 +12,14 @@ import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import cats.data.OptionT
+import cats.implicits._
+
 trait LeagueApiComponent {
   def leagueApi: LeagueApi
 
   trait LeagueApi {
-    def get(url: String, queryParam: Map[String, String] = Map.empty): Future[HttpResponse]
-    def getAsString(url: String, queryParam: Map[String, String] = Map.empty): Future[String]
+    def get(url: String, queryParam: Map[String, String] = Map.empty): Future[String]
   }
 
 }
@@ -31,33 +33,23 @@ trait DefaultLeagueApiComponent extends LeagueApiComponent {
   class DefaultLeagueApi(apiKey: String) extends LeagueApi {
     implicit val materializer = ActorMaterializer()
 
-    def get(url: String, queryParam: Map[String, String] = Map.empty): Future[HttpResponse] = {
+    def get(url: String, queryParam: Map[String, String] = Map.empty): Future[String] = {
       val uri = Uri(url).withQuery(Query(queryParam + ("api_key" -> apiKey)))
-      Http().singleRequest(HttpRequest(uri = uri))
-    }
+      val cacheKey = Uri(url).withQuery(Query(queryParam)).toString   // we don't need the apiKey in the cacheKey
 
-    def getAsString(url: String, queryParam: Map[String, String] = Map.empty): Future[String] = {
-      val uri = Uri(url).withQuery(Query(queryParam + ("api_key" -> apiKey)))
-      val cacheKey = Uri(url).withQuery(Query(queryParam)).toString  // the uri without the api key
-      val cacheResult = serviceCache.getItem(cacheKey)
-        cacheResult.flatMap { cacheOption =>
-        cacheOption.fold {
-          Http()
-            .singleRequest(HttpRequest(uri = uri))
-            .flatMap(elem => elem.entity.toStrict(500.millis))
-            .map { elem =>
-              val json = elem.data.utf8String
-              serviceCache.putItem(cacheKey, json)
-              println(s"cache miss -> retrieving '$cacheKey' from API")
-              json
-            }
-        } { json =>
-          println(s"cache hit -> retrieving '$cacheKey' from Cache")
-          Future(json)
-        }
+      OptionT(serviceCache.getItem(cacheKey)).getOrElseF {
+        println(s"cache miss -> retrieving '$cacheKey' from API")
+        Http()
+          .singleRequest(HttpRequest(uri = uri))
+          .flatMap(elem => elem.entity.toStrict(500.millis))
+          .map { elem =>
+            val json = elem.data.utf8String
+            serviceCache.putItem(cacheKey, json)
+            json
+          }
       }
-
     }
+
   }
 
 }
