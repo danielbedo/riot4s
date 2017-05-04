@@ -21,7 +21,6 @@ trait LeagueApiComponent {
   trait LeagueApi {
     def get(url: String, queryParam: Map[String, String] = Map.empty): Future[String]
   }
-
 }
 
 trait DefaultLeagueApiComponent extends LeagueApiComponent {
