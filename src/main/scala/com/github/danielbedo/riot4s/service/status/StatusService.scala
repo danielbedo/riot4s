@@ -28,7 +28,7 @@ trait DefaultStatusServiceComponent extends StatusServiceComponent {
   class DefaultStatusService extends StatusService {
 
     def getShardData(region: Region): EitherT[Future, Error, ShardStatus] = {
-      val url = "https://euw1.api.riotgames.com/lol/status/v3/shard-data"
+      val url = s"${region.host}/lol/status/v3/shard-data"
       val decoded = leagueApi.getAsString(url)
       .map { jsonString => decode[ShardStatus](jsonString)}
 

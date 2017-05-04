@@ -28,7 +28,7 @@ trait DefaultSummonerServiceComponent extends SummonerServiceComponent {
   class DefaultSummonerService extends SummonerService {
 
     def getSummonerByName(summonerName: String, region: Region): EitherT[Future, Error, SummonerDTO] = {
-      val url = s"https://${region.getHost()}/lol/summoner/v3/summoners/by-name/$summonerName"
+      val url = s"${region.host}/lol/summoner/v3/summoners/by-name/$summonerName"
       val decoded = leagueApi
         .getAsString(url)
         .map { jsonString => decode[SummonerDTO](jsonString)}
