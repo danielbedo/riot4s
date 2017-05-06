@@ -7,16 +7,18 @@ import com.github.danielbedo.riot4s.service.statsv13.model.PlayerStatsSummaryLis
 import io.circe._
 import io.circe.parser._
 import cats.syntax.either._
+import com.github.danielbedo.ApiErrors.{ApiError, NotFound, SummonerNotFound, UnparseableJson}
 
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import io.circe.generic.auto._
+import cats.implicits._
 
 trait StatsServiceComponent {
   def statsService: StatsService
 
   trait StatsService {
-    def getSummary(summonerId: Long, region: Region): EitherT[Future, Error, PlayerStatsSummaryListDto]
+    def getSummary(summonerId: Long, region: Region): EitherT[Future, ApiError, PlayerStatsSummaryListDto]
   }
 
 }
@@ -28,15 +30,22 @@ trait DefaultStatsServiceComponent extends StatsServiceComponent {
 
   class DefaultStatsService extends StatsService{
 
-    def getSummary(summonerId: Long, region: Region): EitherT[Future, Error, PlayerStatsSummaryListDto] = {
+    def getSummary(summonerId: Long, region: Region): EitherT[Future, ApiError, PlayerStatsSummaryListDto] = {
       val url = s"${region.host}/api/lol/EUW/v1.3/stats/by-summoner/$summonerId/summary"
-      val decoded = leagueApi
-        .get(url)
-        .map { jsonString =>
-        decode[PlayerStatsSummaryListDto](jsonString)
-      }
+      for {
+        response <- leagueApi.get(url).leftMap { error =>
+          val leagueError: ApiError = error match {
+            case NotFound => SummonerNotFound
+            case err: ApiError => err
+          }
+          leagueError
+        }
+        summonerData <- EitherT.fromEither[Future](decode[PlayerStatsSummaryListDto](response)).leftMap{ err =>
+          val newErr: ApiError = UnparseableJson
+          newErr
+        }
 
-      EitherT(decoded)
+      } yield summonerData
     }
 
   }
