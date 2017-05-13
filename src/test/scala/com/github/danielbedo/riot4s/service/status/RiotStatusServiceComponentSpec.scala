@@ -5,7 +5,6 @@ import org.scalatest.{FlatSpec, Matchers}
 import cats.implicits._
 import com.github.danielbedo.riot4s.util.ApiTestUtils
 import cats.data.EitherT
-import com.github.danielbedo.ApiErrors
 import com.github.danielbedo.ApiErrors.{ApiError, UnparseableJson}
 import com.github.danielbedo.riot4s.Regions
 import com.github.danielbedo.riot4s.http.LeagueApiComponent

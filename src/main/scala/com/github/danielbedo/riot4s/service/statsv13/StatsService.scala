@@ -23,15 +23,18 @@ trait StatsServiceComponent {
 
 }
 
-trait DefaultStatsServiceComponent extends StatsServiceComponent {
+trait RiotStatsServiceComponent extends StatsServiceComponent {
   self: LeagueApiComponent =>
 
-  def statsService = new DefaultStatsService
+  def statsService = new RiotStatsService
 
-  class DefaultStatsService extends StatsService{
+  class RiotStatsService extends StatsService {
+    def getUrlForSummaryBySummonerId(summonerId: Long, region: Region): String = {
+      s"${region.host}/api/lol/EUW/v1.3/stats/by-summoner/$summonerId/summary"
+    }
 
     def getSummary(summonerId: Long, region: Region): EitherT[Future, ApiError, PlayerStatsSummaryListDto] = {
-      val url = s"${region.host}/api/lol/EUW/v1.3/stats/by-summoner/$summonerId/summary"
+      val url = getUrlForSummaryBySummonerId(summonerId, region)
       for {
         response <- leagueApi.get(url).leftMap { error =>
           val leagueError: ApiError = error match {
