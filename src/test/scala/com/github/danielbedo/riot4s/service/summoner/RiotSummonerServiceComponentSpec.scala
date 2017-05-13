@@ -7,7 +7,6 @@ import com.github.danielbedo.riot4s.http.LeagueApiComponent
 import org.scalatest._
 import cats.implicits._
 import com.github.danielbedo.ApiErrors
-import com.github.danielbedo.riot4s.Regions.EUW
 import com.github.danielbedo.riot4s.util.ApiTestUtils
 
 import scala.concurrent.{Await, Future}
@@ -18,15 +17,13 @@ import org.scalamock.scalatest.MockFactory
 class RiotSummonerServiceComponentSpec extends FlatSpec with Matchers with MockFactory with ApiTestUtils {
 
   class testFixture extends RiotSummonerServiceComponent with LeagueApiComponent {
-    private def getUrlForSummonerName(name: String) = s"${EUW.host}/lol/summoner/v3/summoners/by-name/$name"
-
     val leagueApi = stub[LeagueApi]
     val unparseableApiResponse = EitherT.right[Future, ApiError, String](Future("{No one expects this}"))
-    (leagueApi.get _).when(getUrlForSummonerName("failingSummoner"), *).returns(unparseableApiResponse)
+    (leagueApi.get _).when(summonerService.getUrlForSummonerName("failingSummoner", Regions.EUW), *).returns(unparseableApiResponse)
 
     val validResponse = getTestFile("/responses/summoner/getSummonerByName_valid.json")
     val validSummonerResponse = EitherT.right[Future, ApiError, String](Future(validResponse))
-    (leagueApi.get _).when(getUrlForSummonerName("validSummoner"), *).returns(validSummonerResponse)
+    (leagueApi.get _).when(summonerService.getUrlForSummonerName("validSummoner", Regions.EUW), *).returns(validSummonerResponse)
   }
 
   "RiotSummonerService" should "respond with unparsableJson if unknown response from API" in {

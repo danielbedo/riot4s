@@ -27,10 +27,10 @@ trait RiotSummonerServiceComponent extends SummonerServiceComponent {
   def summonerService = new RiotSummonerService
 
   class RiotSummonerService extends SummonerService {
+    def getUrlForSummonerName(summonerName: String, region: Region) = s"${region.host}/lol/summoner/v3/summoners/by-name/$summonerName"
 
     def getSummonerByName(summonerName: String, region: Region): EitherT[Future, ApiError, SummonerDTO] = {
-      val url = s"${region.host}/lol/summoner/v3/summoners/by-name/$summonerName"
-
+      val url = getUrlForSummonerName(summonerName, region)
       for {
         response <- leagueApi.get(url).leftMap { error =>
           val leagueError: ApiError = error match {
