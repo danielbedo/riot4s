@@ -9,11 +9,12 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ServiceCacheComponentSpec extends FlatSpec with Matchers {
-  val services = new EmptyLeagueApiComponent
-    with FakeSummonerServiceComponent
-    with GuavaServiceCacheComponent
-
+  
   "A Guava Cache" should "return a cached value" in {
+    val services = new EmptyLeagueApiComponent
+      with FakeSummonerServiceComponent
+      with GuavaServiceCacheComponent
+
     val cacheKey = "ck1"
     val cacheValue = "{\"someKey\": \"someValue\"}"
     val futureResult = for {
@@ -26,6 +27,10 @@ class ServiceCacheComponentSpec extends FlatSpec with Matchers {
   }
 
   "A Guava Cache" should "return None if the value is not present" in {
+    val services = new EmptyLeagueApiComponent
+      with FakeSummonerServiceComponent
+      with GuavaServiceCacheComponent
+
     val cacheKey = "ck1"
     val result = Await.result(services.serviceCache.getItem(cacheKey), 1 seconds)
 
