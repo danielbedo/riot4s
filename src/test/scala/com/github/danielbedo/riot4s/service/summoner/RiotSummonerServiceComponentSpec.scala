@@ -8,12 +8,14 @@ import org.scalatest._
 import cats.implicits._
 import com.github.danielbedo.ApiErrors
 import com.github.danielbedo.riot4s.Regions.EUW
+import com.github.danielbedo.riot4s.util.ApiTestUtils
 
 import scala.concurrent.{Await, Future}
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 import org.scalamock.scalatest.MockFactory
-class RiotSummonerServiceComponentSpec extends FlatSpec with Matchers with MockFactory {
+
+class RiotSummonerServiceComponentSpec extends FlatSpec with Matchers with MockFactory with ApiTestUtils {
 
   class testFixture extends RiotSummonerServiceComponent with LeagueApiComponent {
     private def getUrlForSummonerName(name: String) = s"${EUW.host}/lol/summoner/v3/summoners/by-name/$name"
@@ -22,17 +24,7 @@ class RiotSummonerServiceComponentSpec extends FlatSpec with Matchers with MockF
     val unparseableApiResponse = EitherT.right[Future, ApiError, String](Future("{No one expects this}"))
     (leagueApi.get _).when(getUrlForSummonerName("failingSummoner"), *).returns(unparseableApiResponse)
 
-    val validResponse =
-      """
-        |{
-        |    "profileIconId": 582,
-        |    "name": "validSummoner",
-        |    "summonerLevel": 30,
-        |    "accountId": 1234,
-        |    "id": 1111,
-        |    "revisionDate": 1494638483000
-        |}
-      """.stripMargin
+    val validResponse = getTestFile("/responses/summoner/getSummonerByName_valid.json")
     val validSummonerResponse = EitherT.right[Future, ApiError, String](Future(validResponse))
     (leagueApi.get _).when(getUrlForSummonerName("validSummoner"), *).returns(validSummonerResponse)
   }
