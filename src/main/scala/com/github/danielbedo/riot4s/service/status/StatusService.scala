@@ -20,18 +20,19 @@ trait StatusServiceComponent {
   trait StatusService {
     def getShardData(region: Region): EitherT[Future, ApiError, ShardStatus]
   }
-
 }
 
-trait DefaultStatusServiceComponent extends StatusServiceComponent {
+trait RiotStatusServiceComponent extends StatusServiceComponent {
   self: LeagueApiComponent =>
 
-  def statusService = new DefaultStatusService
+  def statusService = new RiotStatusService
 
-  class DefaultStatusService extends StatusService {
+  class RiotStatusService extends StatusService {
+
+    def getUrlForShardData(region: Region): String = s"${region.host}/lol/status/v3/shard-data"
 
     def getShardData(region: Region): EitherT[Future, ApiError, ShardStatus] = {
-      val url = s"${region.host}/lol/status/v3/shard-data"
+      val url = getUrlForShardData(region)
 
       for {
         response <- leagueApi.get(url)

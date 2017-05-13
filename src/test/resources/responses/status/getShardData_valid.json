@@ -1,0 +1,45 @@
+{
+  "name": "EU West",
+  "region_tag": "eu",
+  "hostname": "prod.euw1.lol.riotgames.com",
+  "services": [
+    {
+      "status": "online",
+      "incidents": [],
+      "name": "Game",
+      "slug": "game"
+    },
+    {
+      "status": "online",
+      "incidents": [],
+      "name": "Store",
+      "slug": "store"
+    },
+    {
+      "status": "online",
+      "incidents": [],
+      "name": "Website",
+      "slug": "website"
+    },
+    {
+      "status": "online",
+      "incidents": [],
+      "name": "Client",
+      "slug": "client"
+    },
+    {
+      "status": "online",
+      "incidents": [],
+      "name": "League client update",
+      "slug": "league client update"
+    }
+  ],
+  "slug": "euw",
+  "locales": [
+    "en_GB",
+    "fr_FR",
+    "it_IT",
+    "es_ES",
+    "de_DE"
+  ]
+}
