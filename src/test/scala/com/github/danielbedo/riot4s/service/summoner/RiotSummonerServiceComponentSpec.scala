@@ -43,9 +43,14 @@ class RiotSummonerServiceComponentSpec extends FlatSpec with Matchers with MockF
     val result = Await.result(summonerResponse, 1 seconds)
 
     assert(result.isRight)
-    val summoner = result.right.get
-    assert(summoner.name == "validSummoner")
-    assert(summoner.id == 1111)
+    result map { s =>
+      assert(s.name == "validSummoner")
+      assert(s.accountId == 1234)
+      assert(s.id == 1111)
+      assert(s.profileIconId == 582)
+      assert(s.revisionDate == 1494638483000l)
+      assert(s.summonerLevel == 30)
+    }
   }
 
 }
