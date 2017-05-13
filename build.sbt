@@ -26,7 +26,8 @@ lazy val root = (project in file(".")).
       "com.github.cb372" %% "scalacache-guava" % "0.9.3",
       "com.github.cb372" %% "scalacache-core" % "0.9.3",
 
-      scalaTest % Test))
+      scalaTest % Test,
+      "org.scalamock" %% "scalamock-scalatest-support" % "3.5.0" % Test))
 
 
 assemblyJarName in assembly := "riot4s.jar"

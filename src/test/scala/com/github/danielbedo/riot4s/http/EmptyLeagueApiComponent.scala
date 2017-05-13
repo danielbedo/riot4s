@@ -12,7 +12,7 @@ import cats.implicits._
   */
 trait EmptyLeagueApiComponent extends LeagueApiComponent {
 
-  def leagueApi = new EmptyLeagueApi
+  val leagueApi = new EmptyLeagueApi
 
   class EmptyLeagueApi extends LeagueApi {
 

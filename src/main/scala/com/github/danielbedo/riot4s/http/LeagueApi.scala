@@ -15,7 +15,7 @@ import cats.implicits._
 import com.github.danielbedo.ApiErrors.{ApiError, BadRequest}
 
 trait LeagueApiComponent {
-  def leagueApi: LeagueApi
+  val leagueApi: LeagueApi
 
   trait LeagueApi {
     def get(url: String, queryParam: Map[String, String] = Map.empty): EitherT[Future, ApiError, String]
@@ -26,7 +26,7 @@ trait DefaultLeagueApiComponent extends LeagueApiComponent {
   self: ActorSystemProvider with ServiceCacheComponent =>
 
   val apiKey: String
-  def leagueApi = new DefaultLeagueApi(apiKey)
+  val leagueApi = new DefaultLeagueApi(apiKey)
 
   class DefaultLeagueApi(apiKey: String) extends LeagueApi {
     implicit val materializer = ActorMaterializer()

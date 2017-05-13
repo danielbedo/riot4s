@@ -21,12 +21,12 @@ trait SummonerServiceComponent {
   }
 }
 
-trait DefaultSummonerServiceComponent extends SummonerServiceComponent {
+trait RiotSummonerServiceComponent extends SummonerServiceComponent {
   self: LeagueApiComponent =>
 
-  def summonerService = new DefaultSummonerService
+  def summonerService = new RiotSummonerService
 
-  class DefaultSummonerService extends SummonerService {
+  class RiotSummonerService extends SummonerService {
 
     def getSummonerByName(summonerName: String, region: Region): EitherT[Future, ApiError, SummonerDTO] = {
       val url = s"${region.host}/lol/summoner/v3/summoners/by-name/$summonerName"
