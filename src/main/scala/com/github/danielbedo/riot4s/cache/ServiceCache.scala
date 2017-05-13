@@ -9,23 +9,21 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 trait ServiceCacheComponent {
-  def serviceCache: ServiceCache
+  val serviceCache: ServiceCache
 
   trait ServiceCache {
     def getItem(uri: String): Future[Option[String]]
     def putItem(uri: String, json: String): Future[Unit]
   }
-
 }
 
 trait GuavaServiceCacheComponent extends ServiceCacheComponent {
-  def serviceCache = new DefaultGuavaCache
-
-  val underlyingGuavaCache = CacheBuilder.newBuilder().maximumSize(10000L).build[String, Object]
-  implicit val scalaCache = ScalaCache(GuavaCache(underlyingGuavaCache))
-  val cache = typed[String, NoSerialization]
+  val serviceCache = new DefaultGuavaCache
 
   class DefaultGuavaCache extends ServiceCache {
+    val underlyingGuavaCache = CacheBuilder.newBuilder().maximumSize(10000L).build[String, Object]
+    implicit val scalaCache = ScalaCache(GuavaCache(underlyingGuavaCache))
+    val cache = typed[String, NoSerialization]
 
     def getItem(uri: String): Future[Option[String]] = {
       cache.get(uri)

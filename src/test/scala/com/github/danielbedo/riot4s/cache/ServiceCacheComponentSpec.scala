@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
 
 class ServiceCacheComponentSpec extends FlatSpec with Matchers {
-  
+
   "A Guava Cache" should "return a cached value" in {
     val services = new EmptyLeagueApiComponent
       with FakeSummonerServiceComponent
