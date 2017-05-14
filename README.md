@@ -17,9 +17,9 @@ object ApiTest extends App {
   // initialize the API with the Components you need  
   val services = new DefaultLeagueApiComponent
     with ActorSystemProvider
-    with DefaultStatusServiceComponent
-    with DefaultSummonerServiceComponent
-    with DefaultStatsServiceComponent
+    with RiotStatusServiceComponent
+    with RiotSummonerServiceComponent
+    with RiotStatsServiceComponent
     with GuavaServiceCacheComponent   // adds in-memory cache for all the api-calls
   {
     override val actorSystem = ActorSystem()
