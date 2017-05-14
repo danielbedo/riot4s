@@ -14,7 +14,7 @@ import io.circe.parser._
 import cats.implicits._
 
 trait SummonerServiceComponent {
-  def summonerService: SummonerService
+  val summonerService: SummonerService
 
   trait SummonerService {
     def getSummonerByName(summonerName: String, region: Region): EitherT[Future, ApiError, SummonerDTO]
@@ -24,7 +24,7 @@ trait SummonerServiceComponent {
 trait RiotSummonerServiceComponent extends SummonerServiceComponent {
   self: LeagueApiComponent =>
 
-  def summonerService = new RiotSummonerService
+  val summonerService = new RiotSummonerService
 
   class RiotSummonerService extends SummonerService {
     def getUrlForSummonerName(summonerName: String, region: Region) = s"${region.host}/lol/summoner/v3/summoners/by-name/$summonerName"
