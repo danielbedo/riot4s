@@ -6,6 +6,8 @@ val akkaVersion = "2.4.17"
 val akkaHttpVersion = "10.0.5"
 val catsVersion = "0.9.0"
 
+crossScalaVersions := Seq("2.11.7", "2.12.0")
+
 lazy val root = (project in file(".")).
   settings(
     inThisBuild(List(
