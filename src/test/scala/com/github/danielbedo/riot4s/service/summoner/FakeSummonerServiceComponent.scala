@@ -18,7 +18,7 @@ import scala.util.Random
 trait FakeSummonerServiceComponent extends SummonerServiceComponent {
   self: LeagueApiComponent =>
 
-  def summonerService = new FakeSummonerService
+  val summonerService = new FakeSummonerService
 
   class FakeSummonerService extends SummonerService {
     def getSummonerByName(summonerName: String, region: Region): EitherT[Future, ApiError, SummonerDTO] = {
