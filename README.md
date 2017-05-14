@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/danielbedo/riot4s.svg?branch=master)](https://travis-ci.org/danielbedo/riot4s)
+
 ## riot4s - Riot Games API Wrapper for Scala
 
 A Scala wrapper around the official League of Legends REST API.
