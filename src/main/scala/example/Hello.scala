@@ -3,9 +3,9 @@ package example
 import com.github.danielbedo.riot4s.{ActorSystemProvider, Regions}
 import com.github.danielbedo.riot4s.http.DefaultLeagueApiComponent
 import com.github.danielbedo.riot4s.cache.GuavaServiceCacheComponent
-import com.github.danielbedo.riot4s.service.statsv13.DefaultStatsServiceComponent
-import com.github.danielbedo.riot4s.service.status.DefaultStatusServiceComponent
-import com.github.danielbedo.riot4s.service.summoner.DefaultSummonerServiceComponent
+import com.github.danielbedo.riot4s.service.statsv13.RiotStatsServiceComponent
+import com.github.danielbedo.riot4s.service.status.RiotStatusServiceComponent
+import com.github.danielbedo.riot4s.service.summoner.RiotSummonerServiceComponent
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -19,9 +19,9 @@ object Hello extends App {
 
   val services = new DefaultLeagueApiComponent
     with ActorSystemProvider
-    with DefaultStatusServiceComponent
-    with DefaultSummonerServiceComponent
-    with DefaultStatsServiceComponent
+    with RiotStatusServiceComponent
+    with RiotSummonerServiceComponent
+    with RiotStatsServiceComponent
     with GuavaServiceCacheComponent {
     override val actorSystem = ActorSystem()
     override val apiKey: String = ""
