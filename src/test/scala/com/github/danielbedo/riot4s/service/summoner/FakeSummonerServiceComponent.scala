@@ -21,28 +21,77 @@ trait FakeSummonerServiceComponent extends SummonerServiceComponent {
   val summonerService = new FakeSummonerService
 
   class FakeSummonerService extends SummonerService {
-    def getSummonerByName(summonerName: String, region: Region): EitherT[Future, ApiError, SummonerDTO] = {
-      val fakeResponse =
-        """
-          |{
-          |    "profileIconId": 582,
-          |    "name": "--summonerName--",
-          |    "summonerLevel": 30,
-          |    "accountId": 24180799,
-          |    "id": "--summonerId--",
-          |    "revisionDate": 1493858818000
-          |}
-        """
-          .stripMargin
-          .replace("--summonerName--", summonerName)
-          .replace("--summonerId--", Random.nextInt(10000).toString)
 
-      val decoded = Future { decode[SummonerDTO](fakeResponse) }
+    def getSummonerByName(summonerName: String, region: Region): EitherT[Future, ApiError, SummonerDTO] = {
+      val fakeResponse = getDummySummonerForName(summonerName)
+      decodeResponse(fakeResponse)
+    }
+
+    def getSummonerByAccountId(accountId: Long, region: Region): EitherT[Future, ApiError, SummonerDTO] = {
+      val fakeResponse = getDummySummonerForAccountId(accountId)
+      decodeResponse(fakeResponse)
+    }
+
+    def getSummonerBySummonerId(summonerId: Long, region: Region): EitherT[Future, ApiError, SummonerDTO] = {
+      val fakeResponse = getDummySummonerForSummonerId(summonerId)
+      decodeResponse(fakeResponse)
+    }
+
+    private def decodeResponse(jsonString: String): EitherT[Future, ApiError, SummonerDTO] = {
+      val decoded = Future { decode[SummonerDTO](jsonString) }
 
       EitherT(decoded).leftMap { circeError =>
         val apiError: ApiError = UnparseableJson
         apiError
       }
+    }
+
+    private def getDummySummonerForName(summonerName: String): String = {
+      """
+        |{
+        |    "profileIconId": 582,
+        |    "name": "--summonerName--",
+        |    "summonerLevel": 30,
+        |    "accountId": 24180799,
+        |    "id": --summonerId--,
+        |    "revisionDate": 1493858818000
+        |}
+      """
+        .stripMargin
+        .replace("--summonerName--", summonerName)
+        .replace("--summonerId--", Random.nextInt(10000).toString)
+    }
+
+    private def getDummySummonerForAccountId(accountId: Long): String = {
+      """
+        |{
+        |    "profileIconId": 582,
+        |    "name": SomeRandomSummoner,
+        |    "summonerLevel": 30,
+        |    "accountId": --accountId--,
+        |    "id": --summonerId--,
+        |    "revisionDate": 1493858818000
+        |}
+      """
+        .stripMargin
+        .replace("--accountId--", accountId.toString)
+        .replace("--summonerId--", Random.nextInt(10000).toString)
+    }
+
+    private def getDummySummonerForSummonerId(summonerId: Long): String = {
+      """
+        |{
+        |    "profileIconId": 582,
+        |    "name": SomeRandomSummoner,
+        |    "summonerLevel": 30,
+        |    "accountId": --accountId--,
+        |    "id": --summonerId--,
+        |    "revisionDate": 1493858818000
+        |}
+      """
+        .stripMargin
+        .replace("--accountId--", Random.nextInt(10000).toString)
+        .replace("--summonerId--", summonerId.toString)
     }
   }
 

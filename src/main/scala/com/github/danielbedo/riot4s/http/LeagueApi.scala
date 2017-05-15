@@ -1,5 +1,6 @@
 package com.github.danielbedo.riot4s.http
 
+import akka.actor.ActorSystem
 import com.github.danielbedo.riot4s.ActorSystemProvider
 import com.github.danielbedo.riot4s.cache.ServiceCacheComponent
 import akka.http.scaladsl.Http
@@ -15,7 +16,7 @@ import cats.implicits._
 import com.github.danielbedo.ApiErrors.{ApiError, BadRequest}
 
 trait LeagueApiComponent {
-  val leagueApi: LeagueApi
+  def leagueApi: LeagueApi
 
   trait LeagueApi {
     def get(url: String, queryParam: Map[String, String] = Map.empty): EitherT[Future, ApiError, String]
@@ -26,7 +27,7 @@ trait DefaultLeagueApiComponent extends LeagueApiComponent {
   self: ActorSystemProvider with ServiceCacheComponent =>
 
   val apiKey: String
-  val leagueApi = new DefaultLeagueApi(apiKey)
+  def leagueApi = new DefaultLeagueApi(apiKey)
 
   class DefaultLeagueApi(apiKey: String) extends LeagueApi {
     implicit val materializer = ActorMaterializer()
