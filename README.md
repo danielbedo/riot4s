@@ -32,3 +32,6 @@ object ApiTest extends App {
   } yield stats
 }
 ```
+
+## Persistence
+Currently there is only support for Elasticsearch as persistence storage planned. If you need other storage systems please let us know.
