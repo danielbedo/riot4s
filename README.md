@@ -9,29 +9,43 @@ There are a countless number of libraries available for the League of Legends Ap
 access it. We use the Cake pattern to modularize the api, let you decide which endpoints you need, what caching layer you want etc.
 We use cats and monad transformers to keep your code consise and easy to maintain. 
 So far we only support a small number of endpoints, but its growing :)
-## Code Example
 
+## Quick Start 
+### 1a, Creating the api the simple way
+If you just want to access the API provided by Riot and want to take care about caching responses, persisting returned entities,
+then you can construct the API in a really simple way:
 ```scala
-object ApiTest extends App {
-
+val key = "your-api-key"
+implicit val actorSystem = ActorSystem()
+val api = ApiBuilder(key).build()
+```
+### 1b, Creating the api manually
+If you want to specify which endpoints you need, what caching mechanism you want, what persistance layer you for a specific endpoint
+you want, then you should create the api object yourself
+```scala
   // initialize the API with the Components you need  
-  val services = new DefaultLeagueApiComponent
-    with ActorSystemProvider
-    with RiotStatusServiceComponent
-    with RiotSummonerServiceComponent
-    with RiotStatsServiceComponent
-    with GuavaServiceCacheComponent   // adds in-memory cache for all the api-calls
-  {
-    override val actorSystem = ActorSystem()
-    override val apiKey: String = "your-api-key"
-  }
-
-  val statsFuture = for {
-    summoner <- services.summonerService.getSummonerByName("username", Regions.EUW)
-    stats <- services.statsService.getSummary(summoner.id, Regions.EUW)
-  } yield stats
+val api = new DefaultLeagueApiComponent
+  with ActorSystemProvider
+  with RiotStatusServiceComponent   // statusEndpoint
+  with RiotSummonerServiceComponent // summonerEndpoint
+  with RiotStatsServiceComponent    // statsEndpoint
+  with GuavaServiceCacheComponent   // adds in-memory cache for all the api-calls
+{
+  override val actorSystem = ActorSystem()
+  override val apiKey: String = "your-api-key"
 }
 ```
+
+### 2, Using the created api
+```scala
+val statsFuture = for {
+  summoner <- services.summonerService.getSummonerByName("username", Regions.EUW)
+  stats <- services.statsService.getSummary(summoner.id, Regions.EUW)
+} yield stats
+
+val result: Either[ApiError, PlayerStatsSummaryListDto] = Await.result(statsFuture.value,Duration.Inf)
+```
+
 
 ## Persistence
 Currently there is only support for Elasticsearch as persistence storage planned. If you need other storage systems please let us know.
