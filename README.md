@@ -39,8 +39,8 @@ val api = new DefaultLeagueApiComponent
 ### 2, Using the created api
 ```scala
 val statsFuture = for {
-  summoner <- services.summonerService.getSummonerByName("username", Regions.EUW)
-  stats <- services.statsService.getSummary(summoner.id, Regions.EUW)
+  summoner <- api.summonerService.getSummonerByName("username", Regions.EUW)
+  stats <- api.statsService.getSummary(summoner.id, Regions.EUW)
 } yield stats
 
 val result: Either[ApiError, PlayerStatsSummaryListDto] = Await.result(statsFuture.value,Duration.Inf)
