@@ -55,6 +55,9 @@ val result: Either[ApiError, PlayerStatsSummaryListDto] = Await.result(statsFutu
 | Summoner  |  summoner by summoner id     | V3   | Yes  | [RiotSummonerServiceComponent](https://github.com/danielbedo/riot4s/blob/master/src/main/scala/com/github/danielbedo/riot4s/service/summoner/SummonerService.scala)  |
 | Stats     | player stats summaries by summoner id  | V1.3  | Partially  | [RiotStatsServiceComponent](https://github.com/danielbedo/riot4s/blob/master/src/main/scala/com/github/danielbedo/riot4s/service/statsv13/StatsService.scala)  |
 | Stats     | ranked stats summaries by summoner id  | V1.3  | No  |   |
+| ChampionMastery     | champion masteries by summoner id  | V3  | No  |   |
+| ChampionMastery     | champion masteries by summoner and champion id | V3  | No  |   |
+| ChampionMastery     | total champion mastery score | V3  | No  |   |
 
 ## Persistence
 Currently there is only support for Elasticsearch as persistence storage planned. If you need other storage systems please let us know.
