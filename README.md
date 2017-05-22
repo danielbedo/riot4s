@@ -46,6 +46,15 @@ val statsFuture = for {
 val result: Either[ApiError, PlayerStatsSummaryListDto] = Await.result(statsFuture.value,Duration.Inf)
 ```
 
+## Implemented endpoints
+|Riot Service   | Endpoint  | Version  |  Implemented | Component in the API  |
+|---|---|---|---|---|
+| Status    | status for a given shard         | V3   | Yes | RiotStatusServiceComponent     |
+| Summoner  |  summoner by account id      | V3   | Yes  | RiotSummonerServiceComponent  |
+| Summoner  |  summoner by summoner name   | V3   | Yes  | RiotSummonerServiceComponent  |
+| Summoner  |  summoner by summoner id     | V3   | Yes  | RiotSummonerServiceComponent  |
+| Stats     | player stats summaries by summoner id  | V1.3  | Partially  | RiotStatsServiceComponent  |
+| Stats     | ranked stats summaries by summoner id  | V1.3  | No  |   |
 
 ## Persistence
 Currently there is only support for Elasticsearch as persistence storage planned. If you need other storage systems please let us know.
