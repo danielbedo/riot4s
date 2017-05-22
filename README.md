@@ -49,11 +49,11 @@ val result: Either[ApiError, PlayerStatsSummaryListDto] = Await.result(statsFutu
 ## Implemented endpoints
 |Riot Service   | Endpoint  | Version  |  Implemented | Component in the API  |
 |---|---|---|---|---|
-| Status    | status for a given shard         | V3   | Yes | RiotStatusServiceComponent     |
-| Summoner  |  summoner by account id      | V3   | Yes  | RiotSummonerServiceComponent  |
-| Summoner  |  summoner by summoner name   | V3   | Yes  | RiotSummonerServiceComponent  |
-| Summoner  |  summoner by summoner id     | V3   | Yes  | RiotSummonerServiceComponent  |
-| Stats     | player stats summaries by summoner id  | V1.3  | Partially  | RiotStatsServiceComponent  |
+| Status    | status for a given shard         | V3   | Yes | [RiotStatusServiceComponent](https://github.com/danielbedo/riot4s/blob/master/src/main/scala/com/github/danielbedo/riot4s/service/status/StatusService.scala)     |
+| Summoner  |  summoner by account id      | V3   | Yes  | [RiotSummonerServiceComponent](https://github.com/danielbedo/riot4s/blob/master/src/main/scala/com/github/danielbedo/riot4s/service/summoner/SummonerService.scala)  |
+| Summoner  |  summoner by summoner name   | V3   | Yes  | [RiotSummonerServiceComponent](https://github.com/danielbedo/riot4s/blob/master/src/main/scala/com/github/danielbedo/riot4s/service/summoner/SummonerService.scala)  |
+| Summoner  |  summoner by summoner id     | V3   | Yes  | [RiotSummonerServiceComponent](https://github.com/danielbedo/riot4s/blob/master/src/main/scala/com/github/danielbedo/riot4s/service/summoner/SummonerService.scala)  |
+| Stats     | player stats summaries by summoner id  | V1.3  | Partially  | [RiotStatsServiceComponent](https://github.com/danielbedo/riot4s/blob/master/src/main/scala/com/github/danielbedo/riot4s/service/statsv13/StatsService.scala)  |
 | Stats     | ranked stats summaries by summoner id  | V1.3  | No  |   |
 
 ## Persistence
