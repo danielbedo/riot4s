@@ -23,7 +23,7 @@ class ServiceCacheComponentSpec extends FlatSpec with Matchers {
     } yield retrieved
     val result = Await.result(futureResult, 1 seconds)
 
-    assert (result.isDefined && result.get == cacheValue)
+    assert(result.isDefined && result.get == cacheValue)
   }
 
   "A Guava Cache" should "return None if the value is not present" in {
@@ -33,6 +33,22 @@ class ServiceCacheComponentSpec extends FlatSpec with Matchers {
 
     val cacheKey = "ck1"
     val result = Await.result(services.serviceCache.getItem(cacheKey), 1 seconds)
+
+    assert(result.isEmpty)
+  }
+
+  "A Noop Cache" should "not return anything" in {
+    val services = new EmptyLeagueApiComponent
+      with FakeSummonerServiceComponent
+      with NoopCacheComponent
+
+    val cacheKey = "ck1"
+    val cacheValue = "{\"someKey\": \"someValue\"}"
+    val futureResult = for {
+      _ <- services.serviceCache.putItem(cacheKey, cacheValue)
+      retrieved <- services.serviceCache.getItem(cacheKey)
+    } yield retrieved
+    val result = Await.result(futureResult, 1 seconds)
 
     assert(result.isEmpty)
   }

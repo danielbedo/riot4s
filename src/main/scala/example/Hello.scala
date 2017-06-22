@@ -1,11 +1,7 @@
 package example
 
-import com.github.danielbedo.riot4s.{ActorSystemProvider, Regions}
-import com.github.danielbedo.riot4s.http.DefaultLeagueApiComponent
-import com.github.danielbedo.riot4s.cache.GuavaServiceCacheComponent
-import com.github.danielbedo.riot4s.service.statsv13.RiotStatsServiceComponent
-import com.github.danielbedo.riot4s.service.status.RiotStatusServiceComponent
-import com.github.danielbedo.riot4s.service.summoner.RiotSummonerServiceComponent
+import com.github.danielbedo.riot4s.{Regions}
+import com.github.danielbedo.riot4s.util.ApiBuilder
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -14,28 +10,21 @@ import akka.actor.ActorSystem
 
 import cats._, cats.data._, cats.implicits._
 
+
 object Hello extends App {
   println("Starting app")
+  val key = "your-api-key-here"
 
-  val services = new DefaultLeagueApiComponent
-    with ActorSystemProvider
-    with RiotStatusServiceComponent
-    with RiotSummonerServiceComponent
-    with RiotStatsServiceComponent
-    with GuavaServiceCacheComponent {
-    override val actorSystem = ActorSystem()
-    override val apiKey: String = ""
-  }
+  implicit val actorSystem = ActorSystem()
+  val api = ApiBuilder(key).build()
 
   val statsFuture = for {
-    summoner <-services.summonerService.getSummonerByName("", Regions.EUW)
-    stats <- services.statsService.getSummary(summoner.id, Regions.EUW)
+    summoner <-api.summonerService.getSummonerByName("some-summoner", Regions.EUW)
+    stats <- api.statsService.getSummary(summoner.id, Regions.EUW)
   } yield stats
 
   println(Await.result(statsFuture.value,Duration.Inf))
 
-
-
-  services.actorSystem.shutdown()
+  actorSystem.terminate()
 }
 
