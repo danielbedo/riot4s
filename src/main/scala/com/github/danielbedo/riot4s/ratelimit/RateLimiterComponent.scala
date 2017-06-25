@@ -8,26 +8,23 @@ import scala.collection.mutable
 
 case class ApiCall(region: Region, time: DateTime)
 
-trait RateLimiterComponent {
-  val rateLimiter: RateLimiter
-
-  trait RateLimiter {
-    def getTotalCount(region: Region): Int
-    def addCall(region: Region): Unit
-  }
+sealed trait RateLimiter {
+  def getTotalCount(region: Region): Int
+  def addCall(region: Region): Unit
 }
 
-trait QueueRateLimiterComponent extends RateLimiterComponent {
-  val rateLimiter = new QueueRateLimiter
+class NoopRateLimiter extends RateLimiter {
 
-  class QueueRateLimiter extends RateLimiter {
-    val rateLimitMap: Map[Region, mutable.Queue[DateTime]] = Regions.regions.map { region =>
-      region -> mutable.Queue[DateTime]()
-    }.toMap
+  override def getTotalCount(region: Region): Int = 0
+  override def addCall(region: Region): Unit = ()
+}
 
-    def getTotalCount(region: Region): Int = rateLimitMap.getOrElse(region, mutable.Queue[DateTime]()).size
-    def addCall(region: Region) = rateLimitMap.getOrElse(region, mutable.Queue[DateTime]()).enqueue(DateTime.now())
+class QueueRateLimiter(regions: Set[Region]) extends RateLimiter {
+  val rateLimitMap: Map[Region, mutable.Queue[DateTime]] = regions.map { region =>
+    region -> mutable.Queue[DateTime]()
+  }.toMap
 
-  }
+  def getTotalCount(region: Region): Int = rateLimitMap.getOrElse(region, mutable.Queue[DateTime]()).size
+  def addCall(region: Region): Unit = rateLimitMap.getOrElse(region, mutable.Queue[DateTime]()).enqueue(DateTime.now())
 
 }

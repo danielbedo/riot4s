@@ -2,7 +2,7 @@ package com.github.danielbedo.riot4s.http
 
 import akka.actor.ActorSystem
 import com.github.danielbedo.riot4s.ActorSystemProvider
-import com.github.danielbedo.riot4s.cache.ServiceCacheComponent
+import com.github.danielbedo.riot4s.cache.ServiceCache
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.Uri.Query
 import akka.http.scaladsl.model._
@@ -24,9 +24,10 @@ trait LeagueApiComponent {
 }
 
 trait DefaultLeagueApiComponent extends LeagueApiComponent {
-  self: ActorSystemProvider with ServiceCacheComponent =>
+  self: ActorSystemProvider =>
 
   val apiKey: String
+  val serviceCache: ServiceCache
   def leagueApi = new DefaultLeagueApi(apiKey)
 
   class DefaultLeagueApi(apiKey: String) extends LeagueApi {

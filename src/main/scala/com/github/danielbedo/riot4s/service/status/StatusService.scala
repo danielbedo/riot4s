@@ -13,7 +13,6 @@ import scala.concurrent.Future
 import io.circe.generic.auto._
 import cats.implicits._
 
-
 trait StatusServiceComponent {
   def statusService: StatusService
 
