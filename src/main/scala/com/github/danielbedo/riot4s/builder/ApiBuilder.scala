@@ -31,7 +31,7 @@ class RiotApi(override val apiKey: String,
 
 case class ApiBuilder(apiKey: String,
                       serviceCache: ServiceCache = new NoopCache,
-                      rateLimiter: RateLimiter = new NoopRateLimiter) {
+                      rateLimiter: RateLimiter = new NoopRateLimiter)(implicit as: ActorSystem) {
 
   // Caching
   /**
