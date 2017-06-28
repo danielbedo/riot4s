@@ -10,15 +10,14 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class QueueRateLimiterComponentSpec extends FlatSpec with Matchers {
 
   "The RateLimiter" should "return the correct size after element is inserted" in {
-    val rateLimiterComponent = new QueueRateLimiterComponent {}
-    val initial = rateLimiterComponent.rateLimiter.getTotalCount(Regions.EUW)
+    val rateLimiter = new QueueRateLimiter(Regions.regions)
+    val initial = rateLimiter.getTotalCount(Regions.EUW)
     assert(initial == 0)
-    rateLimiterComponent.rateLimiter.addCall(Regions.EUW)
-    rateLimiterComponent.rateLimiter.addCall(Regions.EUW)
-    rateLimiterComponent.rateLimiter.addCall(Regions.EUNE)
-    assert(rateLimiterComponent.rateLimiter.getTotalCount(Regions.EUW) == 2)
-    assert(rateLimiterComponent.rateLimiter.getTotalCount(Regions.EUNE) == 1)
-
+    rateLimiter.addCall(Regions.EUW)
+    rateLimiter.addCall(Regions.EUW)
+    rateLimiter.addCall(Regions.EUNE)
+    assert(rateLimiter.getTotalCount(Regions.EUW) == 2)
+    assert(rateLimiter.getTotalCount(Regions.EUNE) == 1)
   }
 
 }
